@@ -22,6 +22,10 @@ export default function EnhancedMapScreen({ navigation }) {
     );
   }
 
+  const handleRegionPress = (region) => {
+    navigation.navigate('RegionDetail', { regionId: region.id });
+  };
+
   // Region positions with actual coordinates
   const regionNodes = {
     'belarus_border': { x: 100, y: 80, size: 50 },
@@ -99,7 +103,7 @@ export default function EnhancedMapScreen({ navigation }) {
       return (
         <TouchableOpacity
           key={region.id}
-          onPress={() => setSelectedRegion(region)}
+          onPress={() => handleRegionPress(region)}
           style={{ position: 'absolute', left: node.x - node.size/2, top: node.y - node.size/2 }}
         >
           <Svg width={node.size} height={node.size}>
@@ -190,48 +194,10 @@ export default function EnhancedMapScreen({ navigation }) {
             <View style={[styles.legendLine, { backgroundColor: '#ef4444' }]} />
             <Text style={styles.legendText}>Frontline</Text>
           </View>
-        </View>
-
-        {selectedRegion && (
-          <View style={styles.selectedInfo}>
-            <Text style={styles.selectedTitle}>{selectedRegion.name}</Text>
-            <Text style={styles.selectedDetail}>Control: {selectedRegion.control.toUpperCase()}</Text>
-            <Text style={styles.selectedDetail}>Terrain: {selectedRegion.terrain}</Text>
-            <Text style={styles.selectedDetail}>Supply: {selectedRegion.baseSupply}</Text>
-            <Text style={styles.selectedDetail}>Air Defense: {selectedRegion.airDefenseLevel}</Text>
-            
-            {selectedRegion.enemyStrengthEstimate > 0 && (
-              <Text style={[styles.selectedDetail, { color: '#f87171' }]}>
-                Enemy Strength: {selectedRegion.enemyStrengthEstimate}
-              </Text>
-            )}
-            
-            {selectedRegion.artilleryIntensity > 20 && (
-              <Text style={[styles.selectedDetail, { color: '#fb923c' }]}>
-                Artillery Intensity: {selectedRegion.artilleryIntensity}
-              </Text>
-            )}
-            
-            {selectedRegion.electronicWarfareActive && (
-              <Text style={[styles.selectedDetail, { color: '#fbbf24' }]}>
-                ⚡ Electronic Warfare Active
-              </Text>
-            )}
-            
-            {gameState.brigades.filter(b => b.location === selectedRegion.id).length > 0 && (
-              <View style={styles.brigadesInRegion}>
-                <Text style={styles.brigadesTitle}>Your Forces:</Text>
-                {gameState.brigades
-                  .filter(b => b.location === selectedRegion.id)
-                  .map(b => (
-                    <Text key={b.id} style={styles.brigadeItem}>
-                      • {b.name} (STR: {b.strength}, MOR: {b.morale})
-                    </Text>
-                  ))}
-              </View>
-            )}
+          <View style={styles.infoBox}>
+            <Text style={styles.infoText}>Tap any region for detailed information</Text>
           </View>
-        )}
+        </View>
       </ScrollView>
 
       <View style={styles.footer}>
@@ -344,42 +310,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#d1d5db',
   },
-  selectedInfo: {
-    backgroundColor: '#1f2937',
-    borderRadius: 8,
-    padding: 15,
-    marginHorizontal: 20,
-    marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#3b82f6',
-  },
-  selectedTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#93c5fd',
-    marginBottom: 10,
-  },
-  selectedDetail: {
-    fontSize: 14,
-    color: '#d1d5db',
-    marginVertical: 2,
-  },
-  brigadesInRegion: {
+  infoBox: {
     marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#374151',
+    padding: 10,
+    backgroundColor: '#374151',
+    borderRadius: 6,
   },
-  brigadesTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#10b981',
-    marginBottom: 6,
-  },
-  brigadeItem: {
+  infoText: {
     fontSize: 13,
-    color: '#d1d5db',
-    marginVertical: 2,
+    color: '#9ca3af',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   footer: {
     padding: 15,
