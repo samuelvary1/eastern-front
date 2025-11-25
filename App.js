@@ -8,6 +8,7 @@ import MainMenuScreen from './src/screens/MainMenuScreen';
 import CampaignScreen from './src/screens/CampaignScreen';
 import BrigadeDetailScreen from './src/screens/BrigadeDetailScreen';
 import TurnSummaryScreen from './src/screens/TurnSummaryScreen';
+import MapScreen from './src/screens/EnhancedMapScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,11 @@ export default function App() {
             name="BrigadeDetail"
             component={BrigadeDetailScreen}
             options={{ title: 'Brigade Details' }}
+          />
+          <Stack.Screen
+            name="Map"
+            component={MapScreen}
+            options={{ title: 'Tactical Map' }}
           />
           <Stack.Screen
             name="TurnSummary"

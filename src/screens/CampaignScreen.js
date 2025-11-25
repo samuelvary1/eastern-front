@@ -82,6 +82,12 @@ export default function CampaignScreen({ navigation }) {
       <View style={styles.footer}>
         <View style={styles.footerButtons}>
           <ActionButton
+            title="View Map"
+            onPress={() => navigation.navigate('Map')}
+            variant="secondary"
+            style={styles.footerButton}
+          />
+          <ActionButton
             title="Save Game"
             onPress={handleSave}
             variant="secondary"
